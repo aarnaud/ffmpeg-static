@@ -42,16 +42,18 @@ cd $BUILD_DIR
 ../fetchurl "http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz"
 ../fetchurl "http://zlib.net/zlib-1.2.8.tar.gz"
 ../fetchurl "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz"
-../fetchurl "http://sourceforge.net/projects/libpng/files/libpng16/1.6.6/libpng-1.6.6.tar.gz"
+../fetchurl "http://sourceforge.net/projects/libpng/files/libpng16/1.6.10/libpng-1.6.10.tar.gz"
 ../fetchurl "http://downloads.xiph.org/releases/ogg/libogg-1.3.1.tar.gz"
 ../fetchurl "http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.3.tar.gz"
 ../fetchurl "http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2"
 ../fetchurl "http://webm.googlecode.com/files/libvpx-v1.1.0.tar.bz2"
 ../fetchurl "http://downloads.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.bz2"
 ../fetchurl "ftp://ftp.videolan.org/pub/x264/snapshots/last_x264.tar.bz2"
+../fetchurl "https://bitbucket.org/multicoreware/x265/get/stable.tar.gz"
 ../fetchurl "http://downloads.xvid.org/downloads/xvidcore-1.3.2.tar.gz"
 ../fetchurl "http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz"
-../fetchurl "http://www.ffmpeg.org/releases/ffmpeg-2.1.tar.bz2"
+../fetchurl "http://www.ffmpeg.org/releases/ffmpeg-2.2.1.tar.bz2"
+
 
 echo "*** Building yasm ***"
 cd $BUILD_DIR/yasm*
@@ -105,7 +107,12 @@ make -j $jval && make install
 
 echo "*** Building x264 ***"
 cd $BUILD_DIR/x264*
-./configure --prefix=$TARGET_DIR --enable-static --disable-shared --disable-opencl
+./configure --prefix=$TARGET_DIR --enable-static --disable-opencl
+make -j $jval && make install
+
+echo "*** Building x265 ***"
+cd $BUILD_DIR/multicoreware-x265-*/build/linux/
+cmake -G "Unix Makefiles" ../../source -DCMAKE_INSTALL_PREFIX:PATH=$TARGET_DIR -DBUILD_SHARED_LIBS=OFF
 make -j $jval && make install
 
 echo "*** Building xvidcore ***"
