@@ -133,5 +133,21 @@ rm -f "$TARGET_DIR/lib/*.so"
 # FFMpeg
 echo "*** Building FFmpeg ***"
 cd $BUILD_DIR/ffmpeg*
-CFLAGS="-I$TARGET_DIR/include" LDFLAGS="-L$TARGET_DIR/lib -lm" ./configure --prefix=${OUTPUT_DIR:-$TARGET_DIR} --extra-cflags="-I$TARGET_DIR/include -static" --extra-ldflags="-L$TARGET_DIR/lib -lm -static" --extra-version=static --disable-debug --disable-shared --enable-static --extra-cflags=--static --disable-ffplay --disable-ffserver --disable-doc --enable-gpl --enable-pthreads --enable-postproc --enable-gray --enable-runtime-cpudetect --enable-libfaac --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid --enable-bzlib --enable-zlib --enable-nonfree --enable-version3 --enable-libvpx --disable-devices
+CFLAGS="-I$TARGET_DIR/include" LDFLAGS="-L$TARGET_DIR/lib -lm" ./configure --prefix=${OUTPUT_DIR:-$TARGET_DIR} --extra-cflags="-I$TARGET_DIR/include -static" --extra-ldflags="-L$TARGET_DIR/lib -lm -static" --extra-version=static --disable-debug --disable-shared --enable-static --extra-cflags=--static --disable-ffplay --disable-ffserver --disable-doc --enable-gpl --enable-pthreads --enable-postproc --enable-gray --enable-runtime-cpudetect --enable-libfaac --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libxvid --enable-bzlib --enable-zlib --enable-nonfree --enable-version3 --enable-libvpx --enable-avisynth --disable-devices
 make -j $jval && make install
+
+
+# FFMpeg
+# echo "*** Building avxsynth ***"
+# sudo apt-get install autoconf
+# sudo apt-get install libtool
+# sudo apt-get install liblog4cpp5-dev liblog4cpp5
+# sudo apt-get install libcairo2-dev
+# sudo apt-get install libpango1.0-dev
+# sudo apt-get install libjpeg-dev
+
+# git clone git://github.com/avxsynth/avxsynth.git
+# autoreconf -fiv
+# ./configure --enable-autocrop --enable-framecapture --enable-subtitle
+# make -j $jval
+# sudo checkinstall --pkgname=avxsynth --pkgversion="4.0.01" --backup=no --deldoc=yes --fstrans=no --default
