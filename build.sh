@@ -42,7 +42,7 @@ cd $BUILD_DIR
 ../fetchurl "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz"
 ../fetchurl "http://zlib.net/zlib-1.2.8.tar.gz"
 ../fetchurl "http://www.bzip.org/1.0.6/bzip2-1.0.6.tar.gz"
-../fetchurl "http://sourceforge.net/projects/libpng/files/libpng16/1.6.14/libpng-1.6.14.tar.gz"
+../fetchurl "http://sourceforge.net/projects/libpng/files/libpng16/1.6.16/libpng-1.6.16.tar.gz"
 ../fetchurl "http://downloads.xiph.org/releases/ogg/libogg-1.3.2.tar.gz"
 ../fetchurl "http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.4.tar.gz"
 ../fetchurl "http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2"
@@ -52,7 +52,9 @@ cd $BUILD_DIR
 ../fetchurl "https://bitbucket.org/multicoreware/x265/get/stable.tar.gz"
 ../fetchurl "http://downloads.xvid.org/downloads/xvidcore-1.3.3.tar.gz"
 ../fetchurl "http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz"
-../fetchurl "http://ffmpeg.org/releases/ffmpeg-2.4.2.tar.bz2"
+../fetchurl "https://github.com/mstorsjo/fdk-aac/archive/v0.1.3.tar.gz"
+../fetchurl "http://ffmpeg.org/releases/ffmpeg-2.5.3.tar.bz2"
+
 
 
 echo "*** Building yasm ***"
@@ -126,6 +128,12 @@ cd $BUILD_DIR/lame*
 ./configure --prefix=$TARGET_DIR --enable-static --disable-shared
 make -j $jval && make install
 
+echo "*** Building fdk-aac ***"
+cd $BUILD_DIR/fdk-aac*
+autoreconf -fiv
+./configure --prefix=$TARGET_DIR --enable-static --disable-shared
+make -j $jval && make install
+
 # FIXME: only OS-specific
 rm -f "$TARGET_DIR/lib/*.dylib"
 rm -f "$TARGET_DIR/lib/*.so"
@@ -133,5 +141,5 @@ rm -f "$TARGET_DIR/lib/*.so"
 # FFMpeg
 echo "*** Building FFmpeg ***"
 cd $BUILD_DIR/ffmpeg*
-PKG_CONFIG_PATH=$TARGET_DIR/lib/pkgconfig CFLAGS="-I$TARGET_DIR/include" LDFLAGS="-L$TARGET_DIR/lib -lm" ./configure --pkg-config-flags="--static" --prefix=${OUTPUT_DIR:-$TARGET_DIR} --extra-cflags="-I$TARGET_DIR/include -static" --extra-ldflags="-L$TARGET_DIR/lib -lm -static" --extra-version=static --disable-debug --disable-shared --enable-static --extra-cflags=--static --disable-ffplay --disable-ffserver --disable-doc --enable-gpl --enable-pthreads --enable-postproc --enable-gray --enable-runtime-cpudetect --enable-libfaac --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-bzlib --enable-zlib --enable-nonfree --enable-version3 --enable-libvpx --enable-avisynth --disable-devices
+PKG_CONFIG_PATH=$TARGET_DIR/lib/pkgconfig CFLAGS="-I$TARGET_DIR/include" LDFLAGS="-L$TARGET_DIR/lib -lm" ./configure --pkg-config-flags="--static" --prefix=${OUTPUT_DIR:-$TARGET_DIR} --extra-cflags="-I$TARGET_DIR/include -static" --extra-ldflags="-L$TARGET_DIR/lib -lm -static" --extra-version=static --disable-debug --disable-shared --enable-static --extra-cflags=--static --disable-ffplay --disable-ffserver --disable-doc --enable-gpl --enable-pthreads --enable-postproc --enable-gray --enable-runtime-cpudetect --enable-libfaac --enable-libfdk_aac --enable-libmp3lame --enable-libtheora --enable-libvorbis --enable-libx264 --enable-libx265 --enable-libxvid --enable-bzlib --enable-zlib --enable-nonfree --enable-version3 --enable-libvpx --enable-avisynth --disable-devices
 make -j $jval && make install
